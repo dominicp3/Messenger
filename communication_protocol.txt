@@ -1,4 +1,4 @@
-[header (type)][data (1024B)]
+[header (type)][data (512B)]
 
 Command Types:
 print                  [0][data = string]
@@ -11,8 +11,8 @@ ready (peer)           [6][]
 send ID to client      [7][id (string)]
 
 client side user commands:
-open          --->  [1][]
-connect <id>  --->  [2][id (string)]
+open            --->   [1][]
+connect <id>    --->   [2][id (string)]
 help
 
 client status:

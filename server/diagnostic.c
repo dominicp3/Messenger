@@ -1,17 +1,18 @@
 
 #include "diagnostic.h"
-#define BUFF_SIZE 32
+
+#define BUF_SIZE 32
 
 void *diagnostic(void *d_void)
 {
         struct diag *d = d_void;
 
         printf("type 'help' to get a list of diagnostic commands\n\n");
-        char buff[BUFF_SIZE];
+        char buff[BUF_SIZE];
         while (1) {
                 printf("> ");
 
-                fgets(buff, BUFF_SIZE, stdin);
+                fgets(buff, BUF_SIZE, stdin);
 
                 if (!strcmp("help\n", buff))
                         help_command(); else

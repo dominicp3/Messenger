@@ -1,6 +1,7 @@
 #include "talk.h"
+
 #define BUFF_SIZE 512
-#include <string.h>
+
 int main(int argc, char **argv)
 {
         if (argc != 3)
