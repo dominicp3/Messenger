@@ -1,0 +1,23 @@
+[header (type)][data (1024B)]
+
+Command Types:
+print                  [0][data = string]
+client status to open  [1][]
+connect to id          [2][id (string)]
+connection found       [3][]
+connection not found   [4][]
+ready (instigator)     [5][]
+ready (peer)           [6][]
+send ID to client      [7][id (string)]
+
+client side user commands:
+open          --->  [1][]
+connect <id>  --->  [2][id (string)]
+help
+
+client status:
+0 = neutral
+1 = waiting for connection
+2 = closed
+3 = set connect
+4 = active connection 
