@@ -15,6 +15,6 @@
 #include "command.h"
 
 void user_request(struct meta *m);
-void *client_server_talk(void *data_ptr);
+void *client_request(void *node_void);
 
 #endif /* REQUEST_H */

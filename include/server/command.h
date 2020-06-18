@@ -12,7 +12,7 @@
 #include <netinet/in.h>
 
 #include "struct.h"
-#include "list.h"
+#include "list/list.h"
 #include "sendrecv/sendrecv.h"
 
 void clients_command(struct meta *m);

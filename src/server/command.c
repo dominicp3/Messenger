@@ -3,7 +3,7 @@
 
 void clients_command(struct meta *m)
 {
-        list_print(m->list);
+        lst_print(m->list);
 }
 
 void clear_command(struct meta *m)
@@ -40,7 +40,7 @@ void print_message(int fd)
 
 void status_to_open(struct client *cl)
 {
-        printf("\nclient #%d set to open\n\n", cl->id);
+        printf("client #%d set to open\n\n", cl->id);
         cl->status = 1;
 }
 
@@ -50,7 +50,7 @@ void connect_id(int fd, struct client **peer_ptr, list_t *list)
         recv_all(fd, buf, BUF_SIZE);
 
         int id = atoi(buf);
-        struct client *peer = list_find(list, id);
+        struct client *peer = lst_get(lst_find(list, &id));
 
         uint8_t header;
         if (peer && peer->status != 1) {
@@ -78,10 +78,13 @@ void connect_id(int fd, struct client **peer_ptr, list_t *list)
 
 void ready_connection(struct client *cl, struct client *peer)
 {
-        cl->status = 4;
-        peer->status = 4;
+        int fd[2];
+        if (pipe(fd) == -1) {
+                perror("ready_connection pipe");
+                return;
+        }
 
-        if (fork() == 0) {
+        if (!fork()) {
                 const char *path = "./bin/talk";
 
                 char fd1[10];
@@ -90,8 +93,20 @@ void ready_connection(struct client *cl, struct client *peer)
                 char fd2[10];
                 sprintf(fd2, "%d", peer->fd);
 
-                execl(path, path, fd1, fd2, NULL);
+                char w[10];
+                sprintf(w, "%d", fd[1]);
+                close(fd[0]);
+
+                execl(path, path, fd1, fd2, w, NULL);
         }
+
+        cl->status = 4;
+        peer->status = 4;
+
+        uint8_t wait;
+        close(fd[1]);
+        read(fd[0], &wait, 1);
+        close(fd[0]);
 
         pthread_cond_signal(&peer->cond);
 }

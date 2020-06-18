@@ -8,8 +8,9 @@ COMPILE=$(CC) $(SEARCH) $(OUT) $^ $(CFLAGS) $(ASAN) -lpthread
 CLIENT_SRC=./src/client
 SENDRECV_SRC=./src/sendrecv
 SERVER_SRC=./src/server
+LIST_SRC=./src/list
 
-SERVER_PREREQ=$(SERVER_SRC)/command.c $(SERVER_SRC)/config.c $(SERVER_SRC)/list.c $(SERVER_SRC)/request.c $(SERVER_SRC)/server.c $(SENDRECV_SRC)/sendrecv.c
+SERVER_PREREQ=$(SERVER_SRC)/command.c $(SERVER_SRC)/config.c $(SERVER_SRC)/request.c $(SERVER_SRC)/server.c $(SENDRECV_SRC)/sendrecv.c $(SERVER_SRC)/struct.c $(LIST_SRC)/list.c
 TALK_PREREQ=$(SERVER_SRC)/talk.c $(SENDRECV_SRC)/sendrecv.c
 CLIENT_PREREQ=$(CLIENT_SRC)/command.c $(CLIENT_SRC)/config.c $(CLIENT_SRC)/request.c $(SENDRECV_SRC)/sendrecv.c
 

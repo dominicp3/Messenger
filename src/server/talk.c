@@ -3,8 +3,9 @@
 
 int main(int argc, char **argv)
 {
-        if (argc != 3)
-                return 0;
+        (void) argc;
+
+        close(atoi(argv[3]));
 
         int fd1 = atoi(argv[1]);
         int fd2 = atoi(argv[2]);
@@ -41,6 +42,8 @@ void *cl2cl(void *cl_fds_ptr)
 
         struct pollfd fds = {.fd = fd1, .events = POLLIN, .revents = 0};
 
+        int n;
+
         char buff[BUFF_SIZE];
         while (1) {
                 if (poll(&fds, 1, -1) == -1) {
@@ -52,8 +55,10 @@ void *cl2cl(void *cl_fds_ptr)
                         continue;
 
                 fds.revents = 0;
-                if (recv_all(fd1, buff, BUFF_SIZE) == 0) {
-                        printf("lost connection\n");
+
+                n = recv_all(fd1, buff, BUFF_SIZE);
+                if (n == -1 || n == 0) {
+                        n ? perror("talk cl2cl") : printf("talk lost connection\n");
                         return NULL;
                 }
                 send_all(fd2, buff, BUFF_SIZE);

@@ -11,7 +11,10 @@ void peer2peer(int fd)
 
         int n;
         while (1) {
-                poll(fds, 2, -1);
+                if (poll(fds, 2, -1) == -1) {
+                        perror("poll");
+                        break;
+                }
 
                 if (fds[0].revents) {
                         fgets(buf, BUF_SIZE, stdin);
@@ -72,7 +75,7 @@ char **split_string(char *str)
 
 void open_client(struct data *d)
 {
-        printf("\nclient open for connections\n\n");
+        printf("client open for connections\n");
         d->status = 1;
 
         uint8_t header = 1;

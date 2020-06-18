@@ -22,9 +22,11 @@ void user_request(struct meta *m)
         printf("command not found\n\n");
 }
 
-void *client_server_talk(void *cl_void)
+void *client_request(void *node_void)
 {
-        struct client *cl = cl_void;
+        node_t *node = node_void;
+
+        struct client *cl = lst_get(node);
         struct pollfd fds = {.fd = cl->fd, .events = POLLIN, .revents = 0};
         struct client *peer = NULL;
 
@@ -72,6 +74,7 @@ void *client_server_talk(void *cl_void)
         }
 
         close(cl->fd);
-        list_remove(cl->list, cl);
+        printf("removing client %d\n", cl->id);
+        lst_remove(cl->list, node);
         return NULL;
 }
