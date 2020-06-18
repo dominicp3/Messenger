@@ -1,5 +1,4 @@
-#include "talk.h"
-
+#include "server/talk.h"
 #define BUFF_SIZE 512
 
 int main(int argc, char **argv)

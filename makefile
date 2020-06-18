@@ -1,15 +1,27 @@
 CC=gcc
-SEARCH=./lib
-OUT=./bin
-CFLAGS= -Wall -Werror=vla -Wextra -Wshadow -Wswitch-default -g -fsanitize=address
+CFLAGS=-Wall -Werror=vla -Wextra -Wshadow -Wswitch-default
+ASAN=-g -fsanitize=address
+SEARCH=-I./include
+OUT=-o ./bin/$@
+COMPILE=$(CC) $(SEARCH) $(OUT) $^ $(CFLAGS) $(ASAN) -lpthread
 
-all: server client talk
+CLIENT_SRC=./src/client
+SENDRECV_SRC=./src/sendrecv
+SERVER_SRC=./src/server
 
-server: server/server.c server/diagnostic.c $(SEARCH)/list.c $(SEARCH)/sendrecv.c
-	$(CC) -I$(SEARCH) -o $(OUT)/$@ -lpthread $(CFLAGS) $^
+SERVER_PREREQ=$(SERVER_SRC)/command.c $(SERVER_SRC)/config.c $(SERVER_SRC)/list.c $(SERVER_SRC)/request.c $(SERVER_SRC)/server.c $(SENDRECV_SRC)/sendrecv.c
+TALK_PREREQ=$(SERVER_SRC)/talk.c $(SENDRECV_SRC)/sendrecv.c
+CLIENT_PREREQ=$(CLIENT_SRC)/command.c $(CLIENT_SRC)/config.c $(CLIENT_SRC)/request.c $(SENDRECV_SRC)/sendrecv.c
 
-client: client/client.c $(SEARCH)/sendrecv.c
-	$(CC) -I$(SEARCH) -o $(OUT)/$@ -lpthread $(CFLAGS) $^ 
+PROGRAMS=server talk client
 
-talk: server/talk.c $(SEARCH)/sendrecv.c
-	$(CC) -I$(SEARCH) -o $(OUT)/$@ -lpthread $(CFLAGS) $^
+all: $(PROGRAMS)
+
+server: $(SERVER_PREREQ)
+	$(COMPILE)
+
+talk: $(TALK_PREREQ)
+	$(COMPILE)
+
+client: $(CLIENT_PREREQ)
+	$(COMPILE)

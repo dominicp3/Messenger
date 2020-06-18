@@ -8,7 +8,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#include "sendrecv.h"
+#include "sendrecv/sendrecv.h"
 
 struct client_fds
 {
