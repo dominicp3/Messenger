@@ -5,8 +5,6 @@ int main(int argc, char **argv)
 {
         (void) argc;
 
-        close(atoi(argv[3]));
-
         int fd1 = atoi(argv[1]);
         int fd2 = atoi(argv[2]);
 

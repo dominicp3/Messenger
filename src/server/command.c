@@ -79,12 +79,13 @@ void connect_id(int fd, struct client **peer_ptr, list_t *list)
 void ready_connection(struct client *cl, struct client *peer)
 {
         int fd[2];
-        if (pipe(fd) == -1) {
-                perror("ready_connection pipe");
-                return;
-        }
+        pipe(fd);
 
         if (!fork()) {
+
+                close(fd[0]);
+                close(fd[1]);
+
                 const char *path = "./bin/talk";
 
                 char fd1[10];
@@ -93,11 +94,7 @@ void ready_connection(struct client *cl, struct client *peer)
                 char fd2[10];
                 sprintf(fd2, "%d", peer->fd);
 
-                char w[10];
-                sprintf(w, "%d", fd[1]);
-                close(fd[0]);
-
-                execl(path, path, fd1, fd2, w, NULL);
+                execl(path, path, fd1, fd2, NULL);
         }
 
         cl->status = 4;
