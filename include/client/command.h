@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 
 #include "struct.h"
 #include "sendrecv/sendrecv.h"

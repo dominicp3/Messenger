@@ -3,11 +3,14 @@
 
 void peer2peer(int fd)
 {
+        system("clear");
         char buf[BUF_SIZE];
 
         struct pollfd fds[2];
         fds[0] = (struct pollfd) {.fd = STDIN_FILENO, .events = POLLIN, .revents = 0};
         fds[1] = (struct pollfd) {.fd = fd, .events = POLLIN, .revents = 0};
+
+        struct winsize w;
 
         int n;
         while (1) {
@@ -25,7 +28,9 @@ void peer2peer(int fd)
                                 n ? perror("client") : printf("lost connection\n");
                                 break;
                         }
-                        printf("%s", buf);
+
+                        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+                        printf("%*s", w.ws_col, buf);
                 }
         }
 }
