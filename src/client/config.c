@@ -30,7 +30,7 @@ int config_client(uint16_t port_number, char *ip_addr)
         memset(&serv_addr, 0, sizeof serv_addr);
 
         serv_addr.sin_family = AF_INET;
-        serv_addr.sin_port = port_number;
+        serv_addr.sin_port = bswap_16(port_number);
         inet_aton(ip_addr, (struct in_addr*) &serv_addr.sin_addr);
 
         int fd = socket(AF_INET, SOCK_STREAM, 0);

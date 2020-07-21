@@ -26,7 +26,7 @@ int config_server(uint16_t port, char *ip)
         memset(&server_name, 0, sizeof server_name);
 
         server_name.sin_family = AF_INET;
-        server_name.sin_port = port;
+        server_name.sin_port = bswap_16(port);
         inet_aton(ip, (struct in_addr*) &server_name.sin_addr);
 
         bind(fd, (struct sockaddr*) &server_name, sizeof server_name);

@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <arpa/inet.h>
+#include <byteswap.h>
 
 #include "request.h"
 #include "struct.h"
