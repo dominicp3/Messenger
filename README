@@ -1,2 +1,5 @@
+To compile run
+bash compile.sh
+
 You must run the executables from ./ not ./bin so the correct
 directory is found for talk.c.
